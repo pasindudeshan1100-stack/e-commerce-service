@@ -3,12 +3,12 @@ package com.icet.controller;
 import com.icet.dto.ProductDTO;
 import com.icet.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/product")
 @RequiredArgsConstructor
 public class ProductController {
@@ -18,5 +18,19 @@ public class ProductController {
     @PostMapping
     public void addProduct(@RequestBody ProductDTO productDTO){
         service.addProduct(productDTO);
+    }
+
+    @GetMapping("/all")
+    public List<ProductDTO> getAllProducts(){
+        return service.getAllProducts();
+    }
+
+    @GetMapping("/search")
+    public List<ProductDTO> getProductsByNameCategoryOrBrand(
+            @RequestParam(required = false, defaultValue = "") String name,
+            @RequestParam(required = false, defaultValue = "") String category,
+            @RequestParam(required = false, defaultValue = "") String brand) {
+
+        return service.getProductByNameBrandOrCategory(name, brand, category);
     }
 }
